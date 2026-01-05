@@ -14,6 +14,7 @@ import { Characters } from "./pages/Characters.jsx";
 import { StartShips } from "./pages/StartShips.jsx"; 
 import { Planets} from "./pages/Planets.jsx";
 import { Contacts} from "./pages/Contacts.jsx";
+import { CharactersDetails} from "./pages/CharactersDetails.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

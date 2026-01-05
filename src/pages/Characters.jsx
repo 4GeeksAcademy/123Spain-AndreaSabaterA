@@ -26,7 +26,7 @@ export const Characters = () => {
     setCharacters(characters.filter((char) => char.uid !== uid));
   };
 
-  // Alternar detalles visibles
+  
   const toggleDetails = async (uid) => {
     if (!characterDetails[uid]) {
       try {

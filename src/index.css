@@ -1,0 +1,44 @@
+/* Fondo negro para toda la app */
+body {
+  background-color: #000; /* negro */
+  color: #fff;            /* texto blanco */
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Contenido principal */
+.main-content {
+  background-color: #000; /* negro */
+  color: #fff;            /* texto blanco */
+  min-height: 80vh;
+  padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #fff; /* navbar blanco */
+}
+
+/* Navbar links en negro */
+.navbar .nav-link {
+  color: #000;           /* negro */
+}
+
+.navbar .nav-link:hover {
+  color: #555;           /* gris oscuro al pasar mouse */
+}
+
+/* Dropdown */
+.dropdown-menu {
+  background-color: #fff; /* fondo blanco */
+}
+
+.dropdown-menu .dropdown-item {
+  color: #000;            /* texto negro */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #eee; /* gris claro al pasar mouse */
+  c
+
+  
