@@ -29,6 +29,7 @@ export const router = createBrowserRouter(
       <Route path="startships" element={<StartShips />} />  
       <Route path="planets" element={<Planets />} /> 
       <Route path="contacts" element={<Contacts />} /> 
+      <Route path="character-details" element={<CharactersDetails />} />
     </Route>
   
   )
