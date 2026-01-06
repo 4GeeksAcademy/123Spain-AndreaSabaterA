@@ -18,7 +18,7 @@ export const Contacts = () => {
     address: "",
   });
 
-  // 🔹 GET contactos
+  //  GET contactos
   const getContacts = async () => {
     try {
       setLoading(true);
@@ -45,7 +45,7 @@ export const Contacts = () => {
     }
   };
 
-  // 🔹 Crear contacto (POST)
+  //  Crear contacto (POST)
   const createContact = async () => {
     try {
       setSaving(true);
@@ -75,7 +75,7 @@ export const Contacts = () => {
     }
   };
 
-  // 🔹 Actualizar contacto (PUT)
+  // Actualizar contacto (PUT)
   const updateContact = async (id) => {
     try {
       setSaving(true);
@@ -127,7 +127,7 @@ export const Contacts = () => {
     }
   };
 
-  // 🔹 Manejar submit del formulario
+  //  Manejar submit del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editingId) {
