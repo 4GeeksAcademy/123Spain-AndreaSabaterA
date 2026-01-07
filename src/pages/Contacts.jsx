@@ -106,7 +106,7 @@ export const Contacts = () => {
     }
   };
 
-  // 🔹 Eliminar contacto (DELETE)
+  //  Eliminar contacto (DELETE)
   const deleteContact = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este contacto?")) return;
 
@@ -167,7 +167,7 @@ export const Contacts = () => {
 
       {!agendaExists ? (
         <div className="alert alert-warning text-center">
-          ⚠️ La agenda "{AGENDA_SLUG}" no está creada.
+        La agenda "{AGENDA_SLUG}" no está creada.
         </div>
       ) : (
         <>

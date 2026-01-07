@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-export const Planets = () => {
+export const SpaceShips = () => {
   const swapiHost = "https://www.swapi.tech/api";
-  const imageHost = "https://starwars-visualguide.com/assets/img/planets";
+  const imageHost = "https://starwars-visualguide.com/assets/img/starships";
 
-  const [planets, setPlanets] = useState([]);
-  const [detailsVisible, setDetailsVisible] = useState({}); // { [uid]: boolean }
-  const [planetDetails, setPlanetDetails] = useState({});   // { [uid]: properties }
-  const [loadingDetails, setLoadingDetails] = useState({}); // { [uid]: boolean }
+  const [spaceShips, setSpaceShips] = useState([]);
+  const [detailsVisible, setDetailsVisible] = useState({});
+  const [spaceShipDetails, setSpaceShipDetails] = useState({});
+  const [loadingDetails, setLoadingDetails] = useState({});
 
-  // Favoritos 
+  // ⭐ Favoritos (persistidos)
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem("favorites");
@@ -19,49 +19,49 @@ export const Planets = () => {
     }
   });
 
-  // Persistir favoritos
+  // Guardar favoritos
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
   const isFav = (uid) =>
-    favorites.some((f) => f.type === "planet" && f.uid === String(uid));
+    favorites.some((f) => f.type === "spaceship" && f.uid === String(uid));
 
-  const addFavorite = (planet) => {
-    const id = String(planet.uid);
+  const addFavorite = (ship) => {
+    const id = String(ship.uid);
     setFavorites((prev) => {
-      const exists = prev.some((f) => f.type === "planet" && f.uid === id);
+      const exists = prev.some((f) => f.type === "spaceship" && f.uid === id);
       if (exists) return prev;
-      return [...prev, { type: "planet", uid: id, name: planet.name }];
+      return [...prev, { type: "spaceship", uid: id, name: ship.name }];
     });
   };
 
   const removeFavorite = (uid) => {
     const id = String(uid);
     setFavorites((prev) =>
-      prev.filter((f) => !(f.type === "planet" && f.uid === id))
+      prev.filter((f) => !(f.type === "spaceship" && f.uid === id))
     );
   };
 
-  const getPlanets = async () => {
+  const getSpaceShips = async () => {
     try {
-      const response = await fetch(`${swapiHost}/planets?page=1&limit=60`);
+      const response = await fetch(`${swapiHost}/starships?page=1&limit=60`);
       if (!response.ok) {
         console.error("Error:", response.status, response.statusText);
         return;
       }
       const data = await response.json();
-      setPlanets(Array.isArray(data?.results) ? data.results : []);
+      setSpaceShips(Array.isArray(data?.results) ? data.results : []);
     } catch (error) {
-      console.error("Error fetching planets:", error);
+      console.error("Error fetching spaceships:", error);
     }
   };
 
-  // Eliminar planeta (solo UI)
-  const removePlanet = (uid) => {
+  // Eliminar nave (solo UI)
+  const removeSpaceShip = (uid) => {
     const id = String(uid);
 
-    setPlanets((prev) => prev.filter((p) => String(p.uid) !== id));
+    setSpaceShips((prev) => prev.filter((s) => String(s.uid) !== id));
 
     setDetailsVisible((prev) => {
       const copy = { ...prev };
@@ -69,7 +69,7 @@ export const Planets = () => {
       return copy;
     });
 
-    setPlanetDetails((prev) => {
+    setSpaceShipDetails((prev) => {
       const copy = { ...prev };
       delete copy[id];
       return copy;
@@ -81,22 +81,21 @@ export const Planets = () => {
       return copy;
     });
 
-    // opcional: también quitar de favoritos
     removeFavorite(id);
   };
 
-  // Mostrar/ocultar detalles + fetch la primera vez
+  // Mostrar / ocultar detalles
   const toggleDetails = async (uid) => {
     const id = String(uid);
-
     const nextVisible = !detailsVisible[id];
+
     setDetailsVisible((prev) => ({ ...prev, [id]: nextVisible }));
 
-    if (nextVisible && !planetDetails[id]) {
+    if (nextVisible && !spaceShipDetails[id]) {
       try {
         setLoadingDetails((prev) => ({ ...prev, [id]: true }));
 
-        const response = await fetch(`${swapiHost}/planets/${id}`);
+        const response = await fetch(`${swapiHost}/starships/${id}`);
         if (!response.ok) {
           console.error("Error:", response.status, response.statusText);
           return;
@@ -105,9 +104,9 @@ export const Planets = () => {
         const data = await response.json();
         const props = data?.result?.properties || null;
 
-        setPlanetDetails((prev) => ({ ...prev, [id]: props }));
+        setSpaceShipDetails((prev) => ({ ...prev, [id]: props }));
       } catch (error) {
-        console.error("Error fetching planet details:", error);
+        console.error("Error fetching spaceship details:", error);
       } finally {
         setLoadingDetails((prev) => ({ ...prev, [id]: false }));
       }
@@ -115,20 +114,19 @@ export const Planets = () => {
   };
 
   useEffect(() => {
-    getPlanets();
+    getSpaceShips();
   }, []);
 
   return (
     <div className="container mt-3">
-      {/* Dropdown de favoritos (puedes moverlo a Navbar si quieres) */}
+      {/* Dropdown favoritos */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="m-0">Planets</h1>
+        <h1 className="m-0">SpaceShips</h1>
 
         <div className="dropdown">
           <button
             className="btn btn-warning dropdown-toggle"
             data-bs-toggle="dropdown"
-            aria-expanded="false"
           >
             Favoritos <span className="badge bg-dark ms-2">{favorites.length}</span>
           </button>
@@ -141,14 +139,12 @@ export const Planets = () => {
             {favorites.map((f) => (
               <li
                 key={`${f.type}-${f.uid}`}
-                className="dropdown-item d-flex align-items-center justify-content-between"
+                className="dropdown-item d-flex justify-content-between align-items-center"
               >
-                <span className="me-2">{f.name}</span>
-
+                <span>{f.name}</span>
                 <button
                   className="btn btn-sm btn-outline-danger"
                   onClick={() => removeFavorite(f.uid)}
-                  title="Quitar"
                 >
                   ×
                 </button>
@@ -159,10 +155,10 @@ export const Planets = () => {
       </div>
 
       <div className="row">
-        {planets.map((planet) => {
-          const id = String(planet.uid);
+        {spaceShips.map((ship) => {
+          const id = String(ship.uid);
           const show = Boolean(detailsVisible[id]);
-          const details = planetDetails[id];
+          const details = spaceShipDetails[id];
           const isLoading = Boolean(loadingDetails[id]);
 
           return (
@@ -171,7 +167,7 @@ export const Planets = () => {
                 <img
                   src={`${imageHost}/${id}.jpg`}
                   className="card-img-top"
-                  alt={planet.name}
+                  alt={ship.name}
                   style={{ objectFit: "cover", height: "220px" }}
                   onError={(e) => {
                     e.currentTarget.src =
@@ -180,9 +176,8 @@ export const Planets = () => {
                 />
 
                 <div className="card-body d-flex flex-column">
-                  <h5 className="card-title text-center">{planet.name}</h5>
+                  <h5 className="card-title text-center">{ship.name}</h5>
 
-                  {/* DETALLES */}
                   {show && (
                     <div className="mt-2 flex-grow-1">
                       {isLoading && (
@@ -208,16 +203,10 @@ export const Planets = () => {
                           ))}
                         </ul>
                       )}
-
-                      {!isLoading && !details && (
-                        <div className="text-muted small text-center">
-                          No se encontraron detalles.
-                        </div>
-                      )}
                     </div>
                   )}
 
-                  {/* BOTONES (SIEMPRE ABAJO, MISMO ANCHO) */}
+                  {/* BOTONES */}
                   <div className="mt-auto pt-3">
                     <div className="d-grid gap-2">
                       <button
@@ -230,7 +219,7 @@ export const Planets = () => {
                       {!isFav(id) ? (
                         <button
                           className="btn btn-warning btn-sm"
-                          onClick={() => addFavorite(planet)}
+                          onClick={() => addFavorite(ship)}
                         >
                           ★ Añadir a favoritos
                         </button>
@@ -245,7 +234,7 @@ export const Planets = () => {
 
                       <button
                         className="btn btn-outline-danger btn-sm"
-                        onClick={() => removePlanet(id)}
+                        onClick={() => removeSpaceShip(id)}
                       >
                         Eliminar
                       </button>
@@ -260,6 +249,4 @@ export const Planets = () => {
     </div>
   );
 };
-
-
 
